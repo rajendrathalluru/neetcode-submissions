@@ -1,0 +1,50 @@
+class PrefixTree {
+private:
+    struct TrieNode {
+        TrieNode* children[26] = {nullptr};
+        bool isEndOfWord = false;
+    };
+
+    TrieNode* root;
+
+public:
+    PrefixTree() {
+        root = new TrieNode();
+    }
+    
+    void insert(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            int index = c - 'a';
+            if (!curr->children[index]) {
+                curr->children[index] = new TrieNode();
+            }
+            curr = curr->children[index];
+        }
+        curr->isEndOfWord = true;
+    }
+    
+    bool search(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            int index = c - 'a';
+            if (!curr->children[index]) {
+                return false;
+            }
+            curr = curr->children[index];
+        }
+        return curr->isEndOfWord;
+    }
+    
+    bool startsWith(string prefix) {
+        TrieNode* curr = root;
+        for (char c : prefix) {
+            int index = c - 'a';
+            if (!curr->children[index]) {
+                return false;
+            }
+            curr = curr->children[index];
+        }
+        return true;
+    }
+};
